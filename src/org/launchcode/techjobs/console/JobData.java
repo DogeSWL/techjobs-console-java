@@ -7,9 +7,8 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -28,6 +27,7 @@ public class JobData {
      * @param field The column to retrieve values from
      * @return List of all of the values of the given field
      */
+
     public static ArrayList<String> findAll(String field) {
 
         // load data, if not already loaded
@@ -65,6 +65,36 @@ public class JobData {
      * @param value Value of teh field to search for
      * @return List of all jobs matching the criteria
      */
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobsByValue = new ArrayList<>();
+
+        for (HashMap<String, String> row: allJobs) {
+
+            // entrySet() returns a collection view of mapping contained in row
+            // iter is of type Iterator interface and refers to row.entrySet()
+            Iterator iter = row.entrySet().iterator();
+
+            // If iteration has more elements, returns True and continues looping
+            while (iter.hasNext()) {
+                Map.Entry pair = (Map.Entry)iter.next();
+
+                // Get value of set, then turn object to string, then turn string to lower-case
+                String hashValueLC = pair.getValue().toString().toLowerCase();
+
+                // Check to see if hashValueLC matches lowercase of value
+                // If matches, adds row to jobsByValue
+                if (hashValueLC.contains(value.toLowerCase())) {
+                    jobsByValue.add(row);
+                }
+            }
+        }
+        return jobsByValue;
+    }
+
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
 
         // load data, if not already loaded
