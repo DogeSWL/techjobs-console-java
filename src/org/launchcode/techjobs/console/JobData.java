@@ -89,7 +89,9 @@ public class JobData {
                 // If matches, adds row to jobsByValue
                 if (hashValueLC.contains(value.toLowerCase())) {
                     jobsByValue.add(row);
+                    break;
                 }
+
             }
         }
         return jobsByValue;
